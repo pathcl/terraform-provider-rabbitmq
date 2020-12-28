@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/pathcl/rabbit-hole/v2"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )

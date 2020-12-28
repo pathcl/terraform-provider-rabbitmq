@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/pathcl/rabbit-hole/v2"
 )
 
 func checkDeleted(d *schema.ResourceData, err error) error {
