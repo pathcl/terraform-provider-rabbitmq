@@ -218,38 +218,16 @@ func ReadShovel(d *schema.ResourceData, meta interface{}) error {
 		return checkDeleted(d, err)
 	}
 
-	log.Printf("[DEBUG] RabbitMQ: Shovel retrieved: Vhost: %#v, Name: %#v", vhost, name)
-
-	shovel := make([]map[string]interface{}, 1)
-	s := make(map[string]interface{})
-	s["ack_mode"] = shovelInfo.Definition.AckMode
-	s["add_forward_headers"] = shovelInfo.Definition.AddForwardHeaders
-	s["delete_after"] = shovelInfo.Definition.DeleteAfter
-	s["destination_add_forward_headers"] = shovelInfo.Definition.DestinationAddForwardHeaders
-	s["destination_add_timestamp_header"] = shovelInfo.Definition.DestinationAddTimestampHeader
-	s["destination_address"] = shovelInfo.Definition.DestinationAddress
-	s["destination_application_properties"] = shovelInfo.Definition.DestinationApplicationProperties
-	s["destination_exchange"] = shovelInfo.Definition.DestinationExchange
-	s["destination_exchange_key"] = shovelInfo.Definition.DestinationExchangeKey
-	s["destination_properties"] = shovelInfo.Definition.DestinationProperties
-	s["destination_protocol"] = shovelInfo.Definition.DestinationProtocol
-	s["destination_publish_properties"] = shovelInfo.Definition.DestinationPublishProperties
-	s["destination_queue"] = shovelInfo.Definition.DestinationQueue
-	s["destination_uri"] = shovelInfo.Definition.DestinationURI
-	s["prefetch_count"] = shovelInfo.Definition.PrefetchCount
-	s["reconnect_delay"] = shovelInfo.Definition.ReconnectDelay
-	s["source_address"] = shovelInfo.Definition.SourceAddress
-	s["source_delete_after"] = shovelInfo.Definition.SourceDeleteAfter
-	s["source_exchange"] = shovelInfo.Definition.SourceExchange
-	s["source_exchange_key"] = shovelInfo.Definition.SourceExchangeKey
-	s["source_prefetch_count"] = shovelInfo.Definition.SourcePrefetchCount
-	s["source_protocol"] = shovelInfo.Definition.SourceProtocol
-	s["source_queue"] = shovelInfo.Definition.SourceQueue
-	s["source_uri"] = shovelInfo.Definition.SourceURI
-	shovel[0] = s
+	log.Printf("[DEBUG] RabbitMQ: Shovel retrieved: Vhost: %#v, Name: %#v, Definition: %#v", vhost, name, shovelInfo.Definition)
 
 	d.Set("name", shovelInfo.Name)
 	d.Set("vhost", shovelInfo.Vhost)
+
+	// someting is missing here
+	shovel := make([]map[string]interface{}, 1)
+	s := make(map[string]interface{})
+	s["ack_mode"] = shovelInfo.Definition.AckMode
+	shovel[0] = s
 	d.Set("info", shovel)
 
 	return nil
@@ -289,9 +267,10 @@ func setShovelDefinition(shovelMap map[string]interface{}) interface{} {
 		shovelDefinition.AddForwardHeaders = v
 	}
 
-	if v, ok := shovelMap["delete_after"].(string); ok {
-		shovelDefinition.DeleteAfter = v
-	}
+	/*
+		if v, ok := shovelMap["delete_after"].(string); ok {
+			shovelDefinition.DeleteAfter = v
+		}*/
 
 	if v, ok := shovelMap["destination_add_forward_headers"].(bool); ok {
 		shovelDefinition.DestinationAddForwardHeaders = v
@@ -333,7 +312,7 @@ func setShovelDefinition(shovelMap map[string]interface{}) interface{} {
 		shovelDefinition.DestinationQueue = v
 	}
 
-	if v, ok := shovelMap["destination_uri"].(string); ok {
+	if v, ok := shovelMap["destination_uri"].([]string); ok {
 		shovelDefinition.DestinationURI = v
 	}
 
@@ -371,7 +350,7 @@ func setShovelDefinition(shovelMap map[string]interface{}) interface{} {
 		shovelDefinition.SourceQueue = v
 	}
 
-	if v, ok := shovelMap["source_uri"].(string); ok {
+	if v, ok := shovelMap["source_uri"].([]string); ok {
 		shovelDefinition.SourceURI = v
 	}
 
