@@ -239,7 +239,7 @@ func ReadShovel(d *schema.ResourceData, meta interface{}) error {
 	s["destination_protocol"] = shovelInfo.Definition.DestinationProtocol
 	s["destination_publish_properties"] = shovelInfo.Definition.DestinationPublishProperties
 	s["destination_queue"] = shovelInfo.Definition.DestinationQueue
-	s["destination_uri"] = shovelInfo.Definition.DestinationURI[0]
+	s["destination_uri"] = shovelInfo.Definition.DestinationURI
 	s["prefetch_count"] = shovelInfo.Definition.PrefetchCount
 	s["reconnect_delay"] = shovelInfo.Definition.ReconnectDelay
 	s["source_address"] = shovelInfo.Definition.SourceAddress
@@ -249,7 +249,7 @@ func ReadShovel(d *schema.ResourceData, meta interface{}) error {
 	s["source_prefetch_count"] = shovelInfo.Definition.SourcePrefetchCount
 	s["source_protocol"] = shovelInfo.Definition.SourceProtocol
 	s["source_queue"] = shovelInfo.Definition.SourceQueue
-	s["source_uri"] = shovelInfo.Definition.SourceURI[0]
+	s["source_uri"] = shovelInfo.Definition.SourceURI
 
 	shovel[0] = s
 	d.Set("info", shovel)
@@ -336,7 +336,7 @@ func setShovelDefinition(shovelMap map[string]interface{}) interface{} {
 		shovelDefinition.DestinationQueue = v
 	}
 
-	if v, ok := shovelMap["destination_uri"].([]string); ok {
+	if v, ok := shovelMap["destination_uri"].(string); ok {
 		shovelDefinition.DestinationURI = v
 	}
 
@@ -374,7 +374,7 @@ func setShovelDefinition(shovelMap map[string]interface{}) interface{} {
 		shovelDefinition.SourceQueue = v
 	}
 
-	if v, ok := shovelMap["source_uri"].([]string); ok {
+	if v, ok := shovelMap["source_uri"].(string); ok {
 		shovelDefinition.SourceURI = v
 	}
 
